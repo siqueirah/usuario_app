@@ -1,0 +1,71 @@
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="text-center">
+                        <img src="https://www.cotiinformatica.com.br/imagens/logo-coti-informatica.png" />
+                        <h4 class="card-title mt-3">Autenticação de Usuário</h4>
+                        <p>Entre com as suas credenciais de acesso.</p>
+                    </div>
+                    <hr/>
+
+                    <div class="mb-2 text-center">
+                        <h5 class="text-success">{{mensagem_sucesso}}</h5>
+                        <h5 class="text-danger">{{mensagem_erro}}</h5>
+                    </div>
+
+                    <form [formGroup]="formAutenticar" (ngSubmit)="onSubmit()">
+
+                        <div class="mb-2">
+                            <label for="email" class="form-label">Email de acesso:</label>
+                            <input type="email" class="form-control" id="email" 
+                                placeholder="Digite seu email"
+                                formControlName="email"/>
+                            <div class="text-danger" *ngIf="form.email.touched && form.email.invalid">
+                                <span *ngIf="form.email.errors.required">
+                                    Por favor, informe o seu email.
+                                </span>
+                                <span *ngIf="form.email.errors.email">
+                                    Por favor, informe um endereço de email válido.
+                                </span>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <label for="password" class="form-label">Senha de acesso:</label>
+                            <input type="password" class="form-control" id="password" 
+                                placeholder="Digite sua senha"
+                                formControlName="senha"/>
+                            <div class="text-danger" *ngIf="form.senha.touched && form.senha.invalid">
+                                <span *ngIf="form.senha.errors.required">
+                                    Por favor, informe a sua senha
+                                </span>
+                                <span *ngIf="form.senha.errors.pattern">
+                                    Informe uma senha com letras maiúsculas, letras minúsculas, números, caracteres especiais e no mínimo 8 dígitos.
+                                </span>
+                            </div>
+                            <div class="text-end">
+                                <a href="#">
+                                    Esqueci minha senha?
+                                </a>
+                            </div>
+                        </div>
+                        <div class="mb-2 d-grid">
+                            <button type="submit" class="btn btn-primary"
+                                [disabled]="!formAutenticar.valid">
+                                Acessar Sistema
+                            </button>
+                        </div>
+                        <div class="mb-2 d-grid">
+                            <button type="button" class="btn btn-light">
+                                Não possui conta? <strong>Cadastre-se aqui!</strong>
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="text-center">
+                        <h4 class="card-title mt-3">Recuperação de Senha</h4>
+                        <p>Informe o seu email de usuário para receber uma mensagem de recuperação de senha.</p>
+                    </div>
+                    <hr />
+
+                    <form>
+                        <div class="mb-2">
+                            <label>Email do Usuário:</label>
+                            <input type="text" class="form-control" />
+                        </div>
+                        <div class="mb-2 d-grid">
+                            <input type="submit" class="btn btn-primary" value="Recuperar Senha" />
+                        </div>
+                        <div class="mb-2 d-grid">
+                            <a class="btn btn-light" [routerLink]="['/home/acessar-conta']">
+                                Voltar
+                            </a>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

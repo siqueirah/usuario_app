@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-autenticar',
@@ -10,49 +11,53 @@ import { environment } from 'src/environments/environment';
 })
 export class AutenticarComponent {
 
-  //atributos
+  // atributos
   mensagem_sucesso: string = '';
   mensagem_erro: string = '';
 
-  //construtor
+  // construtor
   constructor(
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private spinner: NgxSpinnerService
   ) { }
 
-  //criando o objeto para capturar o formulário
+  // criando o objeto para capturar o formulário
   formAutenticar = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     senha: new FormControl('', [Validators.required,
     Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\-=_+[\]{}|\\,.<>/?])[a-zA-Z0-9!@#$%^&*()\-=_+[\]{}|\\,.<>/?]{8,}$/)])
   });
-
-  //função para acessar os campos do formulário
-  //na página e exibir as mensagens de erro de validação
+  // função para acessar os campos do formulário
+  // na página e exibir as mensagens de erro de validação
   get form(): any {
     return this.formAutenticar.controls;
   }
 
-  //função para capturar o SUBMIT do formulário
+  // função para capturar o SUBMIT do formulário
   onSubmit(): void {
 
-    //limpar o valor das variáveis
+    this.spinner.show();
+
+    // limpar o valor das variáveis
     this.mensagem_sucesso = '';
     this.mensagem_erro = '';
     
-    //fazendo uma requisição POST para o serviço de autenticação
-    //da API de usuários /POST /api/usuarios/autenticar
+    // fazendo uma requisição POST para o serviço de autenticação
+    // da API de usuários /POST /api/usuarios/autenticar
     this.httpClient.post(
       environment.apiUsuarios + '/autenticar', 
-      this.formAutenticar.value)
-      .subscribe({ //capturar o retorno/resposta da API
-        next: (data : any) => { //resposta de sucesso!
-          this.mensagem_sucesso = data.mensagem;
-          //gravar os dados obtidos na local storage
-          localStorage.setItem('auth_usuario', JSON.stringify(data));
-        },
-        error: (e) => { //resposta de erro!
-          this.mensagem_erro = e.error.mensagem;
-        }
-      })
+      this.formAutenticar.value
+    ).subscribe({ // capturar o retorno/resposta da API
+      next: (data: any) => { // resposta de sucesso!
+        this.mensagem_sucesso = data.mensagem;
+        // gravar os dados obtidos na local storage
+        localStorage.setItem('auth_usuario', JSON.stringify(data));
+      },
+      error: (e) => { // resposta de erro!
+        this.mensagem_erro = e.error.mensagem;
+      }
+    }).add(() => {
+      this.spinner.hide();  
+    });
   }
 }
